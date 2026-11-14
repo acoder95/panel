@@ -348,6 +348,7 @@
 
     <form id="f" novalidate autocomplete="off">
 
+      <!-- ۱. عنوان -->
       <div class="field">
         <div class="label-row">
           <label for="title">عنوان <b>*</b></label>
@@ -359,6 +360,7 @@
                placeholder="مثلاً: کانال برنامه‌نویسی" />
       </div>
 
+      <!-- ۲. تیتر -->
       <div class="field">
         <div class="label-row">
           <label for="title_note">تیتر</label>
@@ -370,6 +372,7 @@
                   placeholder="توضیح کوتاه درباره محتوای کانال یا گروه..."></textarea>
       </div>
 
+      <!-- ۳. دسته‌بندی -->
       <div class="field">
         <div class="label-row">
           <span class="label" id="catLabel">دسته‌بندی <b>*</b></span>
@@ -392,6 +395,7 @@
         <input type="hidden" id="category" name="category_value" required />
       </div>
 
+      <!-- ۴. آدرس -->
       <div class="field">
         <div class="label-row">
           <label for="url">آدرس <b>*</b></label>
@@ -412,12 +416,14 @@
 
   <script>
     /* ============================================================
-       تنظیمات — فقط این دو مقدار را عوض کنید
+       ⚙️  تنظیمات — فقط این دو مقدار را عوض کنید
+       این‌ها را از Supabase → Project Settings → API بردارید
        ============================================================ */
     const SUPABASE_URL = 'https://YOUR_PROJECT.supabase.co';
     const SUPABASE_ANON_KEY = 'YOUR_ANON_KEY';
-    const SUBMIT_ENDPOINT = `${SUPABASE_URL}/functions/v1/submit`;
     /* ============================================================ */
+
+    const INSERT_ENDPOINT = `${SUPABASE_URL}/rest/v1/submissions`;
 
     (function () {
       'use strict';
@@ -431,6 +437,7 @@
       let hintTimer    = null;
       let busy         = false;
 
+      /* ---------------- Hint Popover ---------------- */
       function showHint(anchor, text) {
         hintPop.textContent = text;
         hintPop.setAttribute('aria-hidden', 'false');
@@ -472,6 +479,7 @@
       window.addEventListener('scroll', hideHint, { passive: true });
       window.addEventListener('resize', hideHint);
 
+      /* ---------------- Category Chips ---------------- */
       function setCategory(value) {
         chips.forEach((chip) => {
           const on = chip.dataset.cat === value;
@@ -506,6 +514,7 @@
         });
       });
 
+      /* ---------------- Validation ---------------- */
       function setStatus(msg, type) {
         statusEl.textContent = msg || '';
         statusEl.className = 'status' + (type ? ' ' + type : '');
@@ -541,6 +550,7 @@
         };
       }
 
+      /* ---------------- Submit ---------------- */
       form.addEventListener('submit', async (e) => {
         e.preventDefault();
         if (busy) return;
@@ -556,24 +566,24 @@
         btn.textContent = 'در حال ارسال...';
 
         try {
-          const res = await fetch(SUBMIT_ENDPOINT, {
+          const res = await fetch(INSERT_ENDPOINT, {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',
-              'Authorization': `Bearer ${SUPABASE_ANON_KEY}`,
               'apikey': SUPABASE_ANON_KEY,
+              'Authorization': `Bearer ${SUPABASE_ANON_KEY}`,
+              'Prefer': 'return=minimal',
             },
             body: JSON.stringify(payload),
           });
 
-          const data = await res.json().catch(() => ({}));
-
           if (!res.ok) {
-            throw new Error(data.error || 'خطا در ارسال. لطفاً دوباره تلاش کنید.');
+            const errData = await res.json().catch(() => ({}));
+            const msg = errData.message || errData.hint || 'خطا در ارسال. لطفاً دوباره تلاش کنید.';
+            throw new Error(msg);
           }
 
           setStatus('ثبت شد. ممنون از شما!', 'ok');
-
           form.reset();
           setCategory('');
 
@@ -589,6 +599,7 @@
         }
       });
 
+      /* ---------------- URL auto-prefix ---------------- */
       form.url.addEventListener('blur', () => {
         let v = form.url.value.trim();
         if (!v) return;
@@ -601,4 +612,4 @@
     })();
   </script>
 </body>
-</html>
+  </html>
