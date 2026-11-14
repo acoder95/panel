@@ -19,339 +19,86 @@
       --accent-soft: #eaf1ec;
       --accent-ink: #ffffff;
       --danger: #b42318;
-      --danger-soft: #fdecea;
       --radius: 14px;
       --font: "SF Pro Text", "Segoe UI", "Vazirmatn", "Tahoma", system-ui, sans-serif;
     }
 
     * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
-
     html, body { height: 100%; }
-
     body {
-      margin: 0;
-      min-height: 100dvh;
-      background:
-        radial-gradient(1200px 500px at 50% -100px, #eef1ec 0%, transparent 60%),
-        var(--bg);
-      color: var(--ink);
-      font-family: var(--font);
-      font-size: 14px;
-      line-height: 1.6;
-      -webkit-font-smoothing: antialiased;
-      text-rendering: optimizeLegibility;
+      margin: 0; min-height: 100dvh;
+      background: radial-gradient(1200px 500px at 50% -100px, #eef1ec 0%, transparent 60%), var(--bg);
+      color: var(--ink); font-family: var(--font); font-size: 14px; line-height: 1.6;
+      -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility;
     }
 
-    .wrap {
-      max-width: 780px;
-      margin: 0 auto;
-      padding: 28px 16px calc(60px + env(safe-area-inset-bottom));
-    }
+    .wrap { max-width: 780px; margin: 0 auto; padding: 28px 16px calc(60px + env(safe-area-inset-bottom)); }
+    .topbar { display: flex; align-items: flex-end; justify-content: space-between; gap: 12px; margin-bottom: 24px; }
+    .topbar h1 { font-size: 22px; font-weight: 650; letter-spacing: -.02em; margin: 4px 0 0; line-height: 1.35; }
+    .eyebrow { display: inline-block; font-size: 11px; letter-spacing: .14em; text-transform: uppercase; color: var(--accent); font-weight: 600; padding: 3px 8px; background: var(--accent-soft); border-radius: 6px; }
 
-    /* ---------- Topbar ---------- */
-    .topbar {
-      display: flex;
-      align-items: flex-end;
-      justify-content: space-between;
-      gap: 12px;
-      margin-bottom: 24px;
-    }
+    .panel { background: var(--surface); border: 1px solid var(--line); border-radius: 20px; padding: 24px; box-shadow: 0 1px 0 rgba(0,0,0,.02), 0 24px 48px -28px rgba(0,0,0,.12); animation: rise .4s cubic-bezier(.2,.7,.2,1) both; }
+    @keyframes rise { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
+    .panel h2 { font-size: 16px; font-weight: 650; margin: 0 0 18px; letter-spacing: -.01em; }
 
-    .topbar h1 {
-      font-size: 22px;
-      font-weight: 650;
-      letter-spacing: -.02em;
-      margin: 4px 0 0;
-      line-height: 1.35;
-    }
-
-    .eyebrow {
-      display: inline-block;
-      font-size: 11px;
-      letter-spacing: .14em;
-      text-transform: uppercase;
-      color: var(--accent);
-      font-weight: 600;
-      padding: 3px 8px;
-      background: var(--accent-soft);
-      border-radius: 6px;
-    }
-
-    /* ---------- Panels ---------- */
-    .panel {
-      background: var(--surface);
-      border: 1px solid var(--line);
-      border-radius: 20px;
-      padding: 24px;
-      box-shadow:
-        0 1px 0 rgba(0,0,0,.02),
-        0 24px 48px -28px rgba(0,0,0,.12);
-      animation: rise .4s cubic-bezier(.2,.7,.2,1) both;
-    }
-
-    @keyframes rise {
-      from { opacity: 0; transform: translateY(6px); }
-      to   { opacity: 1; transform: translateY(0); }
-    }
-
-    .panel h2 {
-      font-size: 16px;
-      font-weight: 650;
-      margin: 0 0 18px;
-      letter-spacing: -.01em;
-    }
-
-    /* ---------- Login Form ---------- */
     .stack { display: grid; gap: 10px; }
-
     .field { display: grid; gap: 6px; }
-
-    .field label {
-      font-size: 13px;
-      font-weight: 550;
-      color: var(--ink-soft);
-    }
-
-    .field input {
-      width: 100%;
-      border: 1px solid var(--line);
-      border-radius: var(--radius);
-      background: var(--field);
-      color: var(--ink);
-      font: inherit;
-      font-size: 14px;
-      padding: 11px 13px;
-      outline: none;
-      transition: border-color .15s, background .15s, box-shadow .15s;
-      min-height: 44px;
-    }
-
+    .field label { font-size: 13px; font-weight: 550; color: var(--ink-soft); }
+    .field input { width: 100%; border: 1px solid var(--line); border-radius: var(--radius); background: var(--field); color: var(--ink); font: inherit; font-size: 14px; padding: 11px 13px; outline: none; transition: all .15s; min-height: 44px; }
     .field input::placeholder { color: #a8a8a3; opacity: 1; }
     .field input:hover { border-color: var(--line-strong); }
-    .field input:focus {
-      border-color: var(--accent);
-      background: #fff;
-      box-shadow: 0 0 0 3px rgba(47,107,79,.12);
-    }
+    .field input:focus { border-color: var(--accent); background: #fff; box-shadow: 0 0 0 3px rgba(47,107,79,.12); }
 
-    .btn {
-      font: inherit;
-      font-size: 14px;
-      font-weight: 650;
-      cursor: pointer;
-      border-radius: var(--radius);
-      padding: 12px 16px;
-      border: 0;
-      transition: background .15s, opacity .15s, transform .1s, border-color .15s, color .15s;
-      letter-spacing: -.01em;
-    }
-
+    .btn { font: inherit; font-size: 14px; font-weight: 650; cursor: pointer; border-radius: var(--radius); padding: 12px 16px; border: 0; transition: all .15s; letter-spacing: -.01em; }
     .btn:active:not(:disabled) { transform: scale(.99); }
     .btn:disabled { opacity: .55; cursor: not-allowed; }
-
-    .btn.primary {
-      background: var(--accent);
-      color: var(--accent-ink);
-      width: 100%;
-      box-shadow: 0 1px 0 rgba(0,0,0,.06) inset, 0 6px 16px -8px rgba(47,107,79,.5);
-    }
-
+    .btn.primary { background: var(--accent); color: var(--accent-ink); width: 100%; box-shadow: 0 1px 0 rgba(0,0,0,.06) inset, 0 6px 16px -8px rgba(47,107,79,.5); }
     .btn.primary:hover:not(:disabled) { background: #275a42; }
+    .btn.ghost { background: transparent; color: var(--muted); border: 1px solid var(--line); padding: 8px 14px; font-size: 12.5px; font-weight: 550; }
+    .btn.ghost:hover:not(:disabled) { border-color: var(--accent); color: var(--accent); }
+    .btn:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
 
-    .btn.ghost {
-      background: transparent;
-      color: var(--muted);
-      border: 1px solid var(--line);
-      padding: 8px 14px;
-      font-size: 12.5px;
-      font-weight: 550;
-    }
-
-    .btn.ghost:hover:not(:disabled) {
-      border-color: var(--accent);
-      color: var(--accent);
-    }
-
-    .btn:focus-visible {
-      outline: 2px solid var(--accent);
-      outline-offset: 2px;
-    }
-
-    .msg {
-      font-size: 12.5px;
-      margin: 6px 0 0;
-      min-height: 18px;
-      color: var(--muted);
-      text-align: center;
-    }
-
+    .msg { font-size: 12.5px; margin: 6px 0 0; min-height: 18px; color: var(--muted); text-align: center; }
     .msg.err { color: var(--danger); font-weight: 550; }
-    .msg.ok  { color: var(--accent); font-weight: 550; }
+    .msg.ok { color: var(--accent); font-weight: 550; }
 
-    /* ---------- List ---------- */
-    .list-head {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 12px;
-      margin-bottom: 16px;
-      padding-bottom: 16px;
-      border-bottom: 1px solid var(--line);
-    }
+    .list-head { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 16px; padding-bottom: 16px; border-bottom: 1px solid var(--line); }
+    .count { font-size: 12.5px; color: var(--muted); font-weight: 550; }
+    .count strong { color: var(--ink); font-weight: 650; }
 
-    .count {
-      font-size: 12.5px;
-      color: var(--muted);
-      font-weight: 550;
-    }
-
-    .count strong {
-      color: var(--ink);
-      font-weight: 650;
-    }
-
-    .items {
-      display: grid;
-      gap: 10px;
-    }
-
-    .item {
-      border: 1px solid var(--line);
-      border-radius: var(--radius);
-      padding: 14px 16px;
-      background: #fcfcfa;
-      transition: border-color .15s, background .15s;
-    }
-
-    .item:hover {
-      border-color: var(--line-strong);
-      background: #fff;
-    }
-
-    .item-top {
-      display: flex;
-      align-items: flex-start;
-      justify-content: space-between;
-      gap: 10px;
-      margin-bottom: 2px;
-    }
-
-    .item-title {
-      font-size: 15px;
-      font-weight: 650;
-      margin: 0;
-      letter-spacing: -.01em;
-      line-height: 1.45;
-      color: var(--ink);
-      word-break: break-word;
-    }
-
-    .badge {
-      font-size: 10.5px;
-      font-weight: 650;
-      padding: 3px 9px;
-      border-radius: 20px;
-      flex-shrink: 0;
-      letter-spacing: .01em;
-    }
-
-    .badge.group   { background: var(--accent-soft); color: var(--accent); }
-    .badge.channel { background: #eff0f2;           color: #555; }
-
-    .item-note {
-      font-size: 13px;
-      color: var(--muted);
-      line-height: 1.7;
-      margin: 6px 0 0;
-      word-break: break-word;
-    }
-
-    .item-foot {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 12px;
-      margin-top: 10px;
-      padding-top: 10px;
-      border-top: 1px dashed var(--line);
-    }
-
-    .link {
-      font-size: 12px;
-      color: var(--accent);
-      text-decoration: none;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      white-space: nowrap;
-      max-width: 75%;
-      font-weight: 550;
-      direction: ltr;
-      text-align: left;
-    }
-
+    .items { display: grid; gap: 10px; }
+    .item { border: 1px solid var(--line); border-radius: var(--radius); padding: 14px 16px; background: #fcfcfa; transition: all .15s; }
+    .item:hover { border-color: var(--line-strong); background: #fff; }
+    .item-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 10px; margin-bottom: 2px; }
+    .item-title { font-size: 15px; font-weight: 650; margin: 0; letter-spacing: -.01em; line-height: 1.45; color: var(--ink); word-break: break-word; }
+    .badge { font-size: 10.5px; font-weight: 650; padding: 3px 9px; border-radius: 20px; flex-shrink: 0; letter-spacing: .01em; }
+    .badge.group { background: var(--accent-soft); color: var(--accent); }
+    .badge.channel { background: #eff0f2; color: #555; }
+    .item-note { font-size: 13px; color: var(--muted); line-height: 1.7; margin: 6px 0 0; word-break: break-word; }
+    .item-foot { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-top: 10px; padding-top: 10px; border-top: 1px dashed var(--line); }
+    .link { font-size: 12px; color: var(--accent); text-decoration: none; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; max-width: 75%; font-weight: 550; direction: ltr; text-align: left; }
     .link:hover { text-decoration: underline; }
+    .time { font-size: 11.5px; color: #a0a0a0; flex-shrink: 0; }
 
-    .time {
-      font-size: 11.5px;
-      color: #a0a0a0;
-      flex-shrink: 0;
-    }
-
-    .empty {
-      font-size: 13px;
-      color: var(--muted);
-      text-align: center;
-      padding: 40px 0;
-    }
-
-    .skeleton {
-      height: 80px;
-      border-radius: var(--radius);
-      background: linear-gradient(90deg, #f0eeea 0%, #f7f6f3 50%, #f0eeea 100%);
-      background-size: 200% 100%;
-      animation: shimmer 1.2s ease-in-out infinite;
-    }
-
-    @keyframes shimmer {
-      from { background-position: 200% 0; }
-      to   { background-position: -200% 0; }
-    }
-
-    /* ---------- Spinner ---------- */
-    .spinner {
-      display: inline-block;
-      width: 14px;
-      height: 14px;
-      border: 2px solid rgba(255,255,255,.4);
-      border-top-color: #fff;
-      border-radius: 50%;
-      animation: spin .7s linear infinite;
-      vertical-align: -2px;
-      margin-left: 6px;
-    }
-
+    .empty { font-size: 13px; color: var(--muted); text-align: center; padding: 40px 0; }
+    .skeleton { height: 80px; border-radius: var(--radius); background: linear-gradient(90deg, #f0eeea 0%, #f7f6f3 50%, #f0eeea 100%); background-size: 200% 100%; animation: shimmer 1.2s ease-in-out infinite; }
+    @keyframes shimmer { from { background-position: 200% 0; } to { background-position: -200% 0; } }
+    .spinner { display: inline-block; width: 14px; height: 14px; border: 2px solid rgba(255,255,255,.4); border-top-color: #fff; border-radius: 50%; animation: spin .7s linear infinite; vertical-align: -2px; margin-left: 6px; }
     @keyframes spin { to { transform: rotate(360deg); } }
 
-    /* ---------- Responsive ---------- */
     @media (max-width: 480px) {
       .wrap { padding: 20px 12px calc(40px + env(safe-area-inset-bottom)); }
       .panel { padding: 20px 16px; border-radius: 16px; }
       .topbar h1 { font-size: 19px; }
       .link { max-width: 60%; }
     }
-
     @media (prefers-reduced-motion: reduce) {
-      *, *::before, *::after {
-        animation-duration: .001ms !important;
-        transition-duration: .001ms !important;
-      }
+      *, *::before, *::after { animation-duration: .001ms !important; transition-duration: .001ms !important; }
     }
   </style>
 </head>
 <body>
   <main class="wrap">
-
-    <!-- Topbar -->
     <header class="topbar">
       <div>
         <span class="eyebrow">مدیریت</span>
@@ -366,13 +113,11 @@
       <form id="loginForm" class="stack" novalidate>
         <div class="field">
           <label for="email">ایمیل</label>
-          <input id="email" type="email" placeholder="admin@example.com"
-                 autocomplete="username" required dir="ltr" />
+          <input id="email" type="email" placeholder="admin@example.com" autocomplete="username" required dir="ltr" />
         </div>
         <div class="field">
           <label for="password">رمز عبور</label>
-          <input id="password" type="password" placeholder="••••••••"
-                 autocomplete="current-password" required dir="ltr" />
+          <input id="password" type="password" placeholder="••••••••" autocomplete="current-password" required dir="ltr" />
         </div>
         <button class="btn primary" type="submit" id="loginBtn">ورود</button>
         <p id="authMsg" class="msg" role="status" aria-live="polite"></p>
@@ -388,16 +133,12 @@
       <div id="items" class="items"></div>
       <p id="empty" class="empty" hidden>هنوز درخواستی ثبت نشده است.</p>
     </section>
-
   </main>
 
   <script>
-    /* ============================================================
-       تنظیمات — فقط این دو مقدار را عوض کنید
-       ============================================================ */
-    const SUPABASE_URL = 'https://YOUR_PROJECT.supabase.co';
-    const SUPABASE_ANON_KEY = 'YOUR_ANON_KEY';
-    /* ============================================================ */
+    // ⚙️ تنظیمات سرور شما
+    const SUPABASE_URL = 'https://kttcmxuynnbeqcdpdcok.supabase.co';
+    const SUPABASE_ANON_KEY = 'sb_publishable_yCrlbkNgwJ5YqXNA_Tu6wQ_ZXLFa6TI';
 
     (function () {
       'use strict';
@@ -413,113 +154,35 @@
       const emptyEl      = document.getElementById('empty');
       const refreshBtn   = document.getElementById('refreshBtn');
 
-      let session = null;
+      let accessToken = null;
+      let refreshToken = null;
       let loading = false;
-
-      /* ---------------- Supabase REST helpers ---------------- */
-      // چون از SDK استفاده نمی‌کنیم، حجم صفحه کمتر است و مستقل از CDN کار می‌کند.
-      // ورود با endpoint /auth/v1/token و خواندن با /rest/v1/submissions انجام می‌شود.
 
       async function login(email, password) {
         const res = await fetch(`${SUPABASE_URL}/auth/v1/token?grant_type=password`, {
           method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            'apikey': SUPABASE_ANON_KEY,
-          },
+          headers: { 'Content-Type': 'application/json', 'apikey': SUPABASE_ANON_KEY },
           body: JSON.stringify({ email, password }),
         });
         const data = await res.json().catch(() => ({}));
-        if (!res.ok) {
-          throw new Error(data.error_description || data.msg || 'ایمیل یا رمز عبور اشتباه است.');
-        }
-        return data; // { access_token, refresh_token, user, ... }
-      }
-
-      async function refreshSession(refreshToken) {
-        const res = await fetch(`${SUPABASE_URL}/auth/v1/token?grant_type=refresh_token`, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            'apikey': SUPABASE_ANON_KEY,
-          },
-          body: JSON.stringify({ refresh_token: refreshToken }),
-        });
-        if (!res.ok) return null;
-        return res.json();
+        if (!res.ok) throw new Error(data.error_description || data.msg || 'ایمیل یا رمز عبور اشتباه است.');
+        return data;
       }
 
       async function fetchSubmissions() {
-        const res = await fetch(
-          `${SUPABASE_URL}/rest/v1/submissions?select=*&order=created_at.desc`,
-          {
-            headers: {
-              'apikey': SUPABASE_ANON_KEY,
-              'Authorization': `Bearer ${session.access_token}`,
-            },
-          }
-        );
+        const res = await fetch(`${SUPABASE_URL}/rest/v1/submissions?select=*&order=created_at.desc`, {
+          headers: {
+            'apikey': SUPABASE_ANON_KEY,
+            'Authorization': `Bearer ${accessToken}`,
+          },
+        });
 
-        if (res.status === 401) {
-          // توکن منقضی شده — تلاش برای تازه‌سازی
-          const refreshed = await refreshSession(session.refresh_token);
-          if (refreshed) {
-            session = { ...session, ...refreshed };
-            saveSession();
-            return fetchSubmissions();
-          }
-          throw new Error('UNAUTHORIZED');
-        }
-
-        if (res.status === 403) {
-          throw new Error('شما دسترسی مدیریت ندارید.');
-        }
-
-        if (!res.ok) {
-          throw new Error('خطا در دریافت اطلاعات.');
-        }
-
+        if (res.status === 401) throw new Error('UNAUTHORIZED');
+        if (res.status === 403) throw new Error('شما دسترسی مدیریت ندارید.');
+        if (!res.ok) throw new Error('خطا در دریافت اطلاعات.');
         return res.json();
       }
 
-      async function logout() {
-        try {
-          await fetch(`${SUPABASE_URL}/auth/v1/logout`, {
-            method: 'POST',
-            headers: {
-              'apikey': SUPABASE_ANON_KEY,
-              'Authorization': `Bearer ${session?.access_token || ''}`,
-            },
-          });
-        } catch (_) { /* ignore */ }
-
-        session = null;
-        localStorage.removeItem('admin_session');
-        showLogin();
-      }
-
-      /* ---------------- Session storage ---------------- */
-      function saveSession() {
-        if (session) {
-          localStorage.setItem('admin_session', JSON.stringify({
-            access_token: session.access_token,
-            refresh_token: session.refresh_token,
-            expires_at: session.expires_at || (Date.now() / 1000 + (session.expires_in || 3600)),
-          }));
-        }
-      }
-
-      function loadSession() {
-        try {
-          const raw = localStorage.getItem('admin_session');
-          if (!raw) return null;
-          const data = JSON.parse(raw);
-          // اگر منقضی شده، دور نریز — refresh خواهد شد
-          return data;
-        } catch (_) { return null; }
-      }
-
-      /* ---------------- UI ---------------- */
       function showLogin() {
         authSection.hidden = false;
         listSection.hidden = true;
@@ -554,54 +217,29 @@
         countEl.textContent = '';
       }
 
-      /* ---------------- Render ---------------- */
-      function escapeHtml(s) {
-        return String(s).replace(/[&<>"']/g, (c) => ({
-          '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
-        }[c]));
-      }
-
-      function escapeAttr(s) {
-        return String(s).replace(/"/g, '&quot;').replace(/'/g, '&#39;');
-      }
-
-      function formatDate(iso) {
-        try {
-          const d = new Date(iso);
-          return d.toLocaleDateString('fa-IR', {
-            year: 'numeric', month: 'short', day: 'numeric',
-          });
-        } catch (_) { return ''; }
-      }
+      function escapeHtml(s) { return String(s).replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c])); }
+      function formatDate(iso) { try { return new Date(iso).toLocaleDateString('fa-IR', { year: 'numeric', month: 'short', day: 'numeric' }); } catch (_) { return ''; } }
 
       function render(rows) {
         countEl.innerHTML = `<strong>${rows.length}</strong> مورد`;
         emptyEl.hidden = rows.length > 0;
         itemsEl.innerHTML = '';
-
         if (!rows.length) return;
 
         const frag = document.createDocumentFragment();
-
         for (const row of rows) {
           const catLabel = row.category === 'group' ? 'گروه' : 'کانال';
-          const title = escapeHtml(row.title || '—');
-          const note = row.title_note ? escapeHtml(row.title_note) : '';
-          const url = escapeAttr(row.url || '');
-          const urlText = escapeHtml(row.url || '');
-          const date = formatDate(row.created_at);
-
           const el = document.createElement('article');
           el.className = 'item';
           el.innerHTML = `
             <div class="item-top">
-              <h3 class="item-title">${title}</h3>
+              <h3 class="item-title">${escapeHtml(row.title || '—')}</h3>
               <span class="badge ${row.category === 'group' ? 'group' : 'channel'}">${catLabel}</span>
             </div>
-            ${note ? `<p class="item-note">${note}</p>` : ''}
+            ${row.title_note ? `<p class="item-note">${escapeHtml(row.title_note)}</p>` : ''}
             <div class="item-foot">
-              <a class="link" href="${url}" target="_blank" rel="noopener noreferrer">${urlText}</a>
-              <time class="time">${date}</time>
+              <a class="link" href="${escapeHtml(row.url || '')}" target="_blank" rel="noopener noreferrer">${escapeHtml(row.url || '')}</a>
+              <time class="time">${formatDate(row.created_at)}</time>
             </div>
           `;
           frag.appendChild(el);
@@ -609,19 +247,16 @@
         itemsEl.appendChild(frag);
       }
 
-      /* ---------------- Load list ---------------- */
       async function loadList() {
         if (loading) return;
         setLoading(true);
         showSkeletons();
-
         try {
           const rows = await fetchSubmissions();
           render(rows);
         } catch (err) {
           if (err.message === 'UNAUTHORIZED') {
-            session = null;
-            localStorage.removeItem('admin_session');
+            accessToken = null; refreshToken = null;
             showLogin();
             setAuthMsg('نشست منقضی شده. دوباره وارد شوید.', 'err');
           } else {
@@ -634,82 +269,39 @@
         }
       }
 
-      /* ---------------- Event: login ---------------- */
       loginForm.addEventListener('submit', async (e) => {
         e.preventDefault();
         const email = document.getElementById('email').value.trim();
         const password = document.getElementById('password').value;
 
-        if (!email || !password) {
-          setAuthMsg('ایمیل و رمز عبور را وارد کنید.', 'err');
-          return;
-        }
+        if (!email || !password) { setAuthMsg('ایمیل و رمز عبور را وارد کنید.', 'err'); return; }
 
         loginBtn.disabled = true;
-        const original = loginBtn.innerHTML;
         loginBtn.innerHTML = 'در حال ورود...<span class="spinner"></span>';
         setAuthMsg('');
 
         try {
           const data = await login(email, password);
-          session = {
-            access_token: data.access_token,
-            refresh_token: data.refresh_token,
-            expires_at: data.expires_at || (Date.now() / 1000 + (data.expires_in || 3600)),
-          };
-          saveSession();
+          accessToken = data.access_token;
+          refreshToken = data.refresh_token;
           showList();
           await loadList();
         } catch (err) {
           setAuthMsg(err.message || 'ورود ناموفق بود.', 'err');
         } finally {
           loginBtn.disabled = false;
-          loginBtn.innerHTML = original;
+          loginBtn.innerHTML = 'ورود';
         }
       });
 
-      /* ---------------- Event: logout ---------------- */
-      logoutBtn.addEventListener('click', logout);
+      logoutBtn.addEventListener('click', () => {
+        accessToken = null; refreshToken = null;
+        showLogin();
+      });
 
-      /* ---------------- Event: refresh ---------------- */
       refreshBtn.addEventListener('click', loadList);
-
-      /* ---------------- Boot ---------------- */
-      async function boot() {
-        const saved = loadSession();
-
-        if (!saved) {
-          showLogin();
-          return;
-        }
-
-        session = saved;
-
-        // اگر توکن احتمالاً منقضی شده، اول refresh کن
-        if (saved.expires_at && saved.expires_at * 1000 < Date.now() + 5000) {
-          const refreshed = await refreshSession(saved.refresh_token);
-          if (refreshed) {
-            session = {
-              access_token: refreshed.access_token,
-              refresh_token: refreshed.refresh_token,
-              expires_at: refreshed.expires_at || (Date.now() / 1000 + (refreshed.expires_in || 3600)),
-            };
-            saveSession();
-          } else {
-            session = null;
-            localStorage.removeItem('admin_session');
-            showLogin();
-            return;
-          }
-        }
-
-        showList();
-        await loadList();
-      }
-
-      boot();
-
+      showLogin();
     })();
   </script>
 </body>
-</html>
+        </html>
