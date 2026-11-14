@@ -7,50 +7,27 @@
   <title>ثبت کانال / گروه</title>
   <style>
     :root {
-      --bg: #f6f5f2;
-      --surface: #ffffff;
-      --ink: #1a1a1a;
-      --ink-soft: #3f3f3f;
-      --muted: #6b6b6b;
-      --line: #e6e4df;
-      --line-strong: #d8d5cf;
-      --field: #fbfbf9;
-      --accent: #2f6b4f;
-      --accent-soft: #eaf1ec;
-      --accent-ink: #ffffff;
-      --danger: #b42318;
-      --radius: 14px;
-      --font: "SF Pro Text", "Segoe UI", "Vazirmatn", "Tahoma", system-ui, sans-serif;
+      --bg: #f6f5f2; --surface: #ffffff; --ink: #1a1a1a; --ink-soft: #3f3f3f;
+      --muted: #6b6b6b; --line: #e6e4df; --line-strong: #d8d5cf; --field: #fbfbf9;
+      --accent: #2f6b4f; --accent-soft: #eaf1ec; --accent-ink: #ffffff; --danger: #b42318;
+      --radius: 14px; --font: "SF Pro Text", "Segoe UI", "Vazirmatn", "Tahoma", system-ui, sans-serif;
     }
-
     * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
     html, body { height: 100%; }
     body {
-      margin: 0;
-      min-height: 100dvh;
-      display: grid;
-      place-items: center;
+      margin: 0; min-height: 100dvh; display: grid; place-items: center;
       padding: 24px 16px calc(24px + env(safe-area-inset-bottom));
       background: radial-gradient(1200px 500px at 50% -100px, #eef1ec 0%, transparent 60%), var(--bg);
-      color: var(--ink);
-      font-family: var(--font);
-      font-size: 14px;
-      line-height: 1.6;
-      -webkit-font-smoothing: antialiased;
-      text-rendering: optimizeLegibility;
+      color: var(--ink); font-family: var(--font); font-size: 14px; line-height: 1.6;
+      -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility;
     }
-
     .card {
-      width: min(100%, 520px);
-      background: var(--surface);
-      border: 1px solid var(--line);
-      border-radius: 22px;
-      padding: 28px 24px 24px;
+      width: min(100%, 520px); background: var(--surface); border: 1px solid var(--line);
+      border-radius: 22px; padding: 28px 24px 24px;
       box-shadow: 0 1px 0 rgba(0,0,0,.02), 0 24px 48px -28px rgba(0,0,0,.18);
       animation: rise .5s cubic-bezier(.2, .7, .2, 1) both;
     }
     @keyframes rise { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
-
     .head { margin-bottom: 24px; }
     .eyebrow {
       display: inline-block; font-size: 11px; letter-spacing: .14em; text-transform: uppercase;
@@ -59,11 +36,13 @@
     }
     h1 { font-size: 22px; font-weight: 650; letter-spacing: -.02em; margin: 0 0 6px; line-height: 1.35; }
     .sub { font-size: 13px; color: var(--muted); margin: 0; }
-
     .field { margin-bottom: 18px; }
     .label-row { display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-bottom: 8px; }
-    label, .label { font-size: 13px; font-weight: 550; color: var(--ink-soft); }
-    label b, .label b { color: var(--accent); font-weight: 700; margin-right: 2px; }
+    label, .label { font-size: 13px; font-weight: 550; color: var(--ink-soft); display: flex; align-items: center; gap: 6px; }
+    label b, .label b { color: var(--accent); font-weight: 700; }
+    
+    .word-counter { font-size: 11px; color: var(--muted); font-weight: 500; background: #eee; padding: 2px 6px; border-radius: 4px; transition: all 0.2s; }
+    .word-counter.limit { color: var(--danger); background: #fdecea; }
 
     .hint-btn {
       width: 20px; height: 20px; flex-shrink: 0; border-radius: 50%; border: 1px solid var(--line-strong);
@@ -72,8 +51,7 @@
     }
     .hint-btn:hover { border-color: var(--accent); color: var(--accent); background: var(--accent-soft); }
     .hint-btn:active { transform: scale(.92); }
-    .hint-btn:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
-
+    
     input[type="text"], input[type="url"], textarea {
       width: 100%; border: 1px solid var(--line); border-radius: var(--radius); background: var(--field);
       color: var(--ink); font: inherit; font-size: 14px; padding: 11px 13px; outline: none;
@@ -83,7 +61,8 @@
     input::placeholder, textarea::placeholder { color: #a8a8a3; opacity: 1; }
     input:hover, textarea:hover { border-color: var(--line-strong); }
     input:focus, textarea:focus { border-color: var(--accent); background: #fff; box-shadow: 0 0 0 3px rgba(47,107,79,.12); }
-
+    input.error, textarea.error { border-color: var(--danger); box-shadow: 0 0 0 3px rgba(180,35,24,.1); }
+    
     .chips { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
     .chip {
       position: relative; display: flex; align-items: center; justify-content: center; gap: 8px;
@@ -97,8 +76,7 @@
     .chip[aria-checked="true"] { border-color: var(--accent); background: var(--accent); color: var(--accent-ink); }
     .chip[aria-checked="true"] .dot { border-color: var(--accent-ink); background: var(--accent-ink); }
     .chip[aria-checked="true"] .dot::after { background: var(--accent); transform: scale(1); }
-    .chip:focus-within { outline: 2px solid var(--accent); outline-offset: 2px; }
-
+    
     .submit {
       width: 100%; border: 0; border-radius: var(--radius); background: var(--accent); color: var(--accent-ink);
       font: inherit; font-size: 14.5px; font-weight: 650; padding: 13px; cursor: pointer; margin-top: 6px;
@@ -107,12 +85,11 @@
     .submit:hover:not(:disabled) { background: #275a42; }
     .submit:active:not(:disabled) { transform: scale(.995); }
     .submit:disabled { opacity: .55; cursor: not-allowed; box-shadow: none; }
-    .submit:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
-
+    
     .status { font-size: 12.5px; margin: 12px 0 0; min-height: 18px; color: var(--muted); text-align: center; transition: color .15s; }
     .status.ok { color: var(--accent); font-weight: 550; }
     .status.err { color: var(--danger); font-weight: 550; }
-
+    
     .hint-pop {
       position: fixed; z-index: 50; max-width: 260px; background: #1c1c1c; color: #f4f4f1;
       font-size: 12.5px; line-height: 1.65; padding: 10px 13px; border-radius: 10px;
@@ -120,14 +97,11 @@
     }
     .hint-pop[data-show="true"] { opacity: 1; transform: translateY(0); }
     .hint-pop::before { content: ""; position: absolute; top: -5px; right: 12px; width: 10px; height: 10px; background: #1c1c1c; transform: rotate(45deg); border-radius: 2px; }
-
+    
     @media (max-width: 420px) {
       body { padding: 16px 12px calc(16px + env(safe-area-inset-bottom)); }
       .card { padding: 22px 18px 20px; border-radius: 18px; }
       h1 { font-size: 19px; }
-    }
-    @media (prefers-reduced-motion: reduce) {
-      *, *::before, *::after { animation-duration: .001ms !important; transition-duration: .001ms !important; }
     }
   </style>
 </head>
@@ -140,20 +114,27 @@
     </header>
 
     <form id="f" novalidate autocomplete="off">
+      
       <div class="field">
         <div class="label-row">
-          <label for="title">عنوان <b>*</b></label>
-          <button type="button" class="hint-btn" data-hint="نام کانال یا گپ خود را در اینجا وارد کنید.">!</button>
+          <div style="display:flex; align-items:center; gap:8px;">
+            <label for="title">عنوان <b>*</b></label>
+            <span class="word-counter" id="counter-title">۰ / ۱۰ کلمه</span>
+          </div>
+          <button type="button" class="hint-btn" data-hint="نام کانال یا گپ خود را در اینجا وارد کنید (حداکثر ۱۰ کلمه).">!</button>
         </div>
-        <input id="title" name="title" type="text" maxlength="120" required placeholder="مثلاً: کانال برنامه‌نویسی" />
+        <input id="title" name="title" type="text" required placeholder="مثلاً: کانال برنامه‌نویسی" data-max-words="10" />
       </div>
 
       <div class="field">
         <div class="label-row">
-          <label for="title_note">تیتر</label>
-          <button type="button" class="hint-btn" data-hint="درباره کانال یا گپ خود چند خط بنویسید تا مخاطب بیشتری جذب شود.">!</button>
+          <div style="display:flex; align-items:center; gap:8px;">
+            <label for="title_note">تیتر</label>
+            <span class="word-counter" id="counter-note">۰ / ۷۰ کلمه</span>
+          </div>
+          <button type="button" class="hint-btn" data-hint="درباره کانال یا گپ خود چند خط بنویسید (حداکثر ۷۰ کلمه).">!</button>
         </div>
-        <textarea id="title_note" name="title_note" rows="3" maxlength="500" placeholder="توضیح کوتاه درباره محتوای کانال یا گروه..."></textarea>
+        <textarea id="title_note" name="title_note" rows="3" placeholder="توضیح کوتاه درباره محتوای کانال یا گروه..." data-max-words="70"></textarea>
       </div>
 
       <div class="field">
@@ -164,13 +145,11 @@
         <div class="chips" role="radiogroup" aria-labelledby="catLabel">
           <label class="chip" data-cat="group" role="radio" aria-checked="false" tabindex="0">
             <input type="checkbox" name="category" value="group" />
-            <span class="dot" aria-hidden="true"></span>
-            گروه
+            <span class="dot" aria-hidden="true"></span> گروه
           </label>
           <label class="chip" data-cat="channel" role="radio" aria-checked="false" tabindex="0">
             <input type="checkbox" name="category" value="channel" />
-            <span class="dot" aria-hidden="true"></span>
-            کانال
+            <span class="dot" aria-hidden="true"></span> کانال
           </label>
         </div>
         <input type="hidden" id="category" name="category_value" required />
@@ -178,10 +157,13 @@
 
       <div class="field">
         <div class="label-row">
-          <label for="url">آدرس <b>*</b></label>
-          <button type="button" class="hint-btn" data-hint="لینک گروه یا کانال را وارد کنید.">!</button>
+          <div style="display:flex; align-items:center; gap:8px;">
+            <label for="url">آدرس <b>*</b></label>
+            <span class="word-counter" id="counter-url">۰ / ۱۰ کلمه</span>
+          </div>
+          <button type="button" class="hint-btn" data-hint="لینک گروه یا کانال را وارد کنید (حداکثر ۱۰ کلمه).">!</button>
         </div>
-        <input id="url" name="url" type="url" inputmode="url" required placeholder="https://t.me/example" />
+        <input id="url" name="url" type="url" inputmode="url" required placeholder="https://t.me/example" data-max-words="10" />
       </div>
 
       <button type="submit" class="submit" id="btn">تایید</button>
@@ -192,22 +174,50 @@
   <div class="hint-pop" id="hintPop" role="tooltip" aria-hidden="true"></div>
 
   <script>
-    // ⚙️ تنظیمات سرور شما
     const SUPABASE_URL = 'https://kttcmxuynnbeqcdpdcok.supabase.co';
     const SUPABASE_ANON_KEY = 'sb_publishable_yCrlbkNgwJ5YqXNA_Tu6wQ_ZXLFa6TI';
-    const INSERT_ENDPOINT = `${SUPABASE_URL}/rest/v1/submissions`;
+    const SUBMIT_ENDPOINT = `${SUPABASE_URL}/functions/v1/secure-submit`;
 
     (function () {
       'use strict';
-
-      const form       = document.getElementById('f');
-      const statusEl   = document.getElementById('status');
-      const btn        = document.getElementById('btn');
+      const form = document.getElementById('f');
+      const statusEl = document.getElementById('status');
+      const btn = document.getElementById('btn');
       const categoryIn = document.getElementById('category');
-      const hintPop    = document.getElementById('hintPop');
-      const chips      = Array.from(document.querySelectorAll('.chip'));
-      let hintTimer    = null;
-      let busy         = false;
+      const hintPop = document.getElementById('hintPop');
+      const chips = Array.from(document.querySelectorAll('.chip'));
+      let hintTimer = null;
+      let busy = false;
+
+      function countWords(str) { return str.trim().split(/\s+/).filter(Boolean).length; }
+      function toPersianNum(num) { return num.toString().replace(/\d/g, d => '۰۱۲۳۴۵۶۷۸۹'[d]); }
+
+      // جلوگیری از تایپ بیشتر از تعداد کلمه مجاز
+      function setupWordLimit(inputId, counterId, maxWords) {
+        const input = document.getElementById(inputId);
+        const counter = document.getElementById(counterId);
+
+        input.addEventListener('input', (e) => {
+          const words = e.target.value.trim().split(/\s+/).filter(Boolean);
+          
+          if (words.length > maxWords) {
+            e.target.value = words.slice(0, maxWords).join(' ');
+            input.classList.add('error');
+          } else {
+            input.classList.remove('error');
+          }
+
+          const currentCount = Math.min(words.length, maxWords);
+          counter.textContent = `${toPersianNum(currentCount)} / ${toPersianNum(maxWords)} کلمه`;
+          
+          if (currentCount >= maxWords) counter.classList.add('limit');
+          else counter.classList.remove('limit');
+        });
+      }
+
+      setupWordLimit('title', 'counter-title', 10);
+      setupWordLimit('title_note', 'counter-note', 70);
+      setupWordLimit('url', 'counter-url', 10);
 
       function showHint(anchor, text) {
         hintPop.textContent = text;
@@ -233,7 +243,6 @@
       document.querySelectorAll('.hint-btn').forEach((b) => {
         b.addEventListener('click', (e) => { e.stopPropagation(); showHint(b, b.dataset.hint || ''); });
       });
-
       document.addEventListener('click', hideHint);
       window.addEventListener('scroll', hideHint, { passive: true });
 
@@ -268,46 +277,43 @@
         const url = form.url.value.trim();
         const cat = categoryIn.value;
 
-        if (title.length < 2) { setStatus('عنوان را وارد کنید (حداقل ۲ حرف).', 'err'); form.title.focus(); return; }
+        if (countWords(title) < 1) { setStatus('عنوان را وارد کنید.', 'err'); form.title.focus(); return; }
         if (!cat) { setStatus('دسته‌بندی را انتخاب کنید.', 'err'); return; }
         if (!/^https?:\/\/.+/i.test(url)) { setStatus('آدرس باید با http:// یا https:// شروع شود.', 'err'); form.url.focus(); return; }
 
-        busy = true;
-        btn.disabled = true;
+        busy = true; btn.disabled = true;
         const originalText = btn.textContent;
         btn.textContent = 'در حال ارسال...';
 
         try {
-          const res = await fetch(INSERT_ENDPOINT, {
+          const res = await fetch(SUBMIT_ENDPOINT, {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',
               'apikey': SUPABASE_ANON_KEY,
               'Authorization': `Bearer ${SUPABASE_ANON_KEY}`,
-              'Prefer': 'return=minimal',
             },
             body: JSON.stringify({
-              title,
-              title_note: form.title_note.value.trim() || null,
-              category: cat,
-              url,
+              title, title_note: form.title_note.value.trim() || null, category: cat, url
             }),
           });
 
-          if (!res.ok) {
-            const errData = await res.json().catch(() => ({}));
-            throw new Error(errData.message || 'خطا در ارسال.');
-          }
+          const data = await res.json().catch(() => ({}));
+          if (!res.ok) throw new Error(data.error || 'خطا در ارسال.');
 
           setStatus('ثبت شد. ممنون از شما!', 'ok');
           form.reset();
           setCategory('');
+          
+          document.getElementById('counter-title').textContent = '۰ / ۱۰ کلمه';
+          document.getElementById('counter-note').textContent = '۰ / ۷۰ کلمه';
+          document.getElementById('counter-url').textContent = '۰ / ۱۰ کلمه';
+          document.querySelectorAll('.word-counter').forEach(c => c.classList.remove('limit'));
+          
         } catch (err) {
           setStatus(err.message === 'Failed to fetch' ? 'ارتباط با سرور برقرار نشد.' : err.message, 'err');
         } finally {
-          busy = false;
-          btn.disabled = false;
-          btn.textContent = originalText;
+          busy = false; btn.disabled = false; btn.textContent = originalText;
         }
       });
 
@@ -315,8 +321,7 @@
         let v = form.url.value.trim();
         if (v && !/^https?:\/\//i.test(v)) form.url.value = 'https://' + v;
       });
-
     })();
   </script>
 </body>
-  </html>
+          </html>
