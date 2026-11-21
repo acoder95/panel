@@ -121,9 +121,10 @@
             <label for="title">عنوان <b>*</b></label>
             <span class="word-counter" id="counter-title">۰ / ۱۰ کلمه</span>
           </div>
-          <button type="button" class="hint-btn" data-hint="نام کانال یا گپ خود را در اینجا وارد کنید (حداکثر ۱۰ کلمه).">!</button>
+          <button type="button" class="hint-btn" data-hint="نام کانال یا گپ خود را در اینجا وارد کنید (حداکثر ۱۰ کلمه و ۱۰۰ حرف).">!</button>
         </div>
-        <input id="title" name="title" type="text" required placeholder="مثلاً: کانال برنامه‌نویسی" data-max-words="10" />
+        <!-- maxlength="100" جلوی تایپ بیش از ۱۰۰ حرف را می‌گیرد -->
+        <input id="title" name="title" type="text" required maxlength="100" placeholder="مثلاً: کانال برنامه‌نویسی" data-max-words="10" />
       </div>
 
       <div class="field">
@@ -132,9 +133,10 @@
             <label for="title_note">تیتر</label>
             <span class="word-counter" id="counter-note">۰ / ۷۰ کلمه</span>
           </div>
-          <button type="button" class="hint-btn" data-hint="درباره کانال یا گپ خود چند خط بنویسید (حداکثر ۷۰ کلمه).">!</button>
+          <button type="button" class="hint-btn" data-hint="درباره کانال یا گپ خود چند خط بنویسید (حداکثر ۷۰ کلمه و ۶۰۰ حرف).">!</button>
         </div>
-        <textarea id="title_note" name="title_note" rows="3" placeholder="توضیح کوتاه درباره محتوای کانال یا گروه..." data-max-words="70"></textarea>
+        <!-- maxlength="600" -->
+        <textarea id="title_note" name="title_note" rows="3" maxlength="600" placeholder="توضیح کوتاه درباره محتوای کانال یا گروه..." data-max-words="70"></textarea>
       </div>
 
       <div class="field">
@@ -161,9 +163,10 @@
             <label for="url">آدرس <b>*</b></label>
             <span class="word-counter" id="counter-url">۰ / ۱۰ کلمه</span>
           </div>
-          <button type="button" class="hint-btn" data-hint="لینک گروه یا کانال را وارد کنید (حداکثر ۱۰ کلمه).">!</button>
+          <button type="button" class="hint-btn" data-hint="لینک گروه یا کانال را وارد کنید (حداکثر ۱۰ کلمه و ۲۰۰ حرف).">!</button>
         </div>
-        <input id="url" name="url" type="url" inputmode="url" required placeholder="https://t.me/example" data-max-words="10" />
+        <!-- maxlength="200" -->
+        <input id="url" name="url" type="url" inputmode="url" required maxlength="200" placeholder="https://t.me/example" data-max-words="10" />
       </div>
 
       <button type="submit" class="submit" id="btn">تایید</button>
@@ -177,6 +180,9 @@
     const SUPABASE_URL = 'https://kttcmxuynnbeqcdpdcok.supabase.co';
     const SUPABASE_ANON_KEY = 'sb_publishable_yCrlbkNgwJ5YqXNA_Tu6wQ_ZXLFa6TI';
     const SUBMIT_ENDPOINT = `${SUPABASE_URL}/functions/v1/clever-service`;
+
+    // ساخت یک شناسه یکتا برای دستگاه (اثر انگشت مرورگر) بدون ذخیره در کوکی
+    const deviceId = btoa(navigator.userAgent + screen.width + screen.height + navigator.language + navigator.hardwareConcurrency).substring(0, 32);
 
     (function () {
       'use strict';
@@ -278,7 +284,14 @@
 
         if (countWords(title) < 1) { setStatus('عنوان را وارد کنید.', 'err'); form.title.focus(); return; }
         if (!cat) { setStatus('دسته‌بندی را انتخاب کنید.', 'err'); return; }
-        if (!/^https?:\/\/.+/i.test(url)) { setStatus('آدرس باید با http:// یا https:// شروع شود.', 'err'); form.url.focus(); return; }
+        
+        // اعتبارسنجی سخت‌گیرانه آدرس در سمت مرورگر
+        const urlRegex = /^https?:\/\/([a-zA-Z0-9-]+\.)+[a-zA-Z]{2,}(:[0-9]+)?(\/.*)?$/i;
+        if (!urlRegex.test(url)) { 
+          setStatus('آدرس وارد شده معتبر نیست. (مثال: https://t.me/example)', 'err'); 
+          form.url.focus(); 
+          return; 
+        }
 
         busy = true; btn.disabled = true;
         const originalText = btn.textContent;
@@ -293,7 +306,11 @@
               'Authorization': `Bearer ${SUPABASE_ANON_KEY}`,
             },
             body: JSON.stringify({
-              title, title_note: form.title_note.value.trim() || null, category: cat, url
+              title, 
+              title_note: form.title_note.value.trim() || null, 
+              category: cat, 
+              url,
+              deviceId: deviceId // ارسال شناسه دستگاه به سرور
             }),
           });
 
