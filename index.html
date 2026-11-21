@@ -176,7 +176,6 @@
   <script>
     const SUPABASE_URL = 'https://kttcmxuynnbeqcdpdcok.supabase.co';
     const SUPABASE_ANON_KEY = 'sb_publishable_yCrlbkNgwJ5YqXNA_Tu6wQ_ZXLFa6TI';
-    // ⬇️ اینجا آدرس تابع رو به اسم جدید تغییر دادم
     const SUBMIT_ENDPOINT = `${SUPABASE_URL}/functions/v1/clever-service`;
 
     (function () {
@@ -193,7 +192,6 @@
       function countWords(str) { return str.trim().split(/\s+/).filter(Boolean).length; }
       function toPersianNum(num) { return num.toString().replace(/\d/g, d => '۰۱۲۳۴۵۶۷۸۹'[d]); }
 
-      // جلوگیری از تایپ بیشتر از تعداد کلمه مجاز
       function setupWordLimit(inputId, counterId, maxWords) {
         const input = document.getElementById(inputId);
         const counter = document.getElementById(counterId);
@@ -325,4 +323,4 @@
     })();
   </script>
 </body>
-            </html>
+</html>
