@@ -41,9 +41,6 @@
     label, .label { font-size: 13px; font-weight: 550; color: var(--ink-soft); display: flex; align-items: center; gap: 6px; }
     label b, .label b { color: var(--accent); font-weight: 700; }
     
-    .word-counter { font-size: 11px; color: var(--muted); font-weight: 500; background: #eee; padding: 2px 6px; border-radius: 4px; transition: all 0.2s; }
-    .word-counter.limit { color: var(--danger); background: #fdecea; font-weight: 700; }
-
     .hint-btn {
       width: 20px; height: 20px; flex-shrink: 0; border-radius: 50%; border: 1px solid var(--line-strong);
       background: var(--surface); color: var(--muted); font-size: 11px; font-weight: 700; line-height: 1;
@@ -117,10 +114,7 @@
       
       <div class="field">
         <div class="label-row">
-          <div style="display:flex; align-items:center; gap:8px;">
-            <label for="title">عنوان <b>*</b></label>
-            <span class="word-counter" id="counter-title">۰ / ۷ حرف</span>
-          </div>
+          <label for="title">عنوان <b>*</b></label>
           <button type="button" class="hint-btn" data-hint="نام کانال یا گپ خود را وارد کنید (حداکثر ۷ حرف).">!</button>
         </div>
         <input id="title" name="title" type="text" required placeholder="مثلاً: کانال من" />
@@ -128,10 +122,7 @@
 
       <div class="field">
         <div class="label-row">
-          <div style="display:flex; align-items:center; gap:8px;">
-            <label for="title_note">تیتر</label>
-            <span class="word-counter" id="counter-note">۰ / ۱۵ حرف</span>
-          </div>
+          <label for="title_note">تیتر</label>
           <button type="button" class="hint-btn" data-hint="درباره کانال یا گپ خود بنویسید (حداکثر ۱۵ حرف).">!</button>
         </div>
         <textarea id="title_note" name="title_note" rows="3" placeholder="توضیح کوتاه..."></textarea>
@@ -157,10 +148,7 @@
 
       <div class="field">
         <div class="label-row">
-          <div style="display:flex; align-items:center; gap:8px;">
-            <label for="url">آدرس <b>*</b></label>
-            <span class="word-counter" id="counter-url">۰ / ۸ حرف</span>
-          </div>
+          <label for="url">آدرس <b>*</b></label>
           <button type="button" class="hint-btn" data-hint="لینک گروه یا کانال (بدون https://). مثال: t.me/abc">!</button>
         </div>
         <input id="url" name="url" type="text" inputmode="url" required placeholder="t.me/abc" />
@@ -191,12 +179,9 @@
       let hintTimer = null;
       let busy = false;
 
-      function toPersianNum(num) { return num.toString().replace(/\d/g, d => '۰۱۲۳۴۵۶۷۸۹'[d]); }
-
       // 🔒 محدودکننده دقیق حروف (بدون در نظر گرفتن فاصله‌ها)
-      function setupCharLimit(inputId, counterId, maxChars) {
+      function setupCharLimit(inputId, maxChars) {
         const input = document.getElementById(inputId);
-        const counter = document.getElementById(counterId);
 
         function enforce() {
           let val = input.value;
@@ -221,11 +206,6 @@
           } else {
             input.classList.remove('error');
           }
-
-          let current = input.value.replace(/\s/g, '').length;
-          counter.textContent = `${toPersianNum(current)} / ${toPersianNum(maxChars)} حرف`;
-          if (current >= maxChars) counter.classList.add('limit');
-          else counter.classList.remove('limit');
         }
 
         input.addEventListener('input', enforce);
@@ -233,9 +213,9 @@
         input.addEventListener('keyup', enforce);
       }
 
-      setupCharLimit('title', 'counter-title', 7);
-      setupCharLimit('title_note', 'counter-note', 15);
-      setupCharLimit('url', 'counter-url', 8);
+      setupCharLimit('title', 7);
+      setupCharLimit('title_note', 15);
+      setupCharLimit('url', 8);
 
       function showHint(anchor, text) {
         hintPop.textContent = text;
@@ -330,10 +310,7 @@
           form.reset();
           setCategory('');
           
-          document.getElementById('counter-title').textContent = '۰ / ۷ حرف';
-          document.getElementById('counter-note').textContent = '۰ / ۱۵ حرف';
-          document.getElementById('counter-url').textContent = '۰ / ۸ حرف';
-          document.querySelectorAll('.word-counter').forEach(c => c.classList.remove('limit'));
+          // فقط پاک کردن مرزهای قرمز بعد از ثبت
           document.querySelectorAll('input, textarea').forEach(i => i.classList.remove('error'));
           
         } catch (err) {
@@ -343,13 +320,10 @@
         }
       });
 
-      // اصلاح خودکار آدرس (افزودن https:// در صورت نبود)
       form.url.addEventListener('blur', () => {
         let v = form.url.value.trim();
         if (v && !/^https?:\/\//i.test(v)) {
-          // اگر کاربر https:// وارد نکرده بود، اضافه می‌کنیم
           form.url.value = 'https://' + v;
-          // ولی چون محدودیت حروف داریم، طولش زیاد میشه. پس در سرور هندل میشه.
         }
       });
     })();
