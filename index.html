@@ -119,22 +119,22 @@
         <div class="label-row">
           <div style="display:flex; align-items:center; gap:8px;">
             <label for="title">عنوان <b>*</b></label>
-            <span class="word-counter" id="counter-title">۰ / ۱۰ کلمه</span>
+            <span class="word-counter" id="counter-title">۰ / ۷ حرف</span>
           </div>
-          <button type="button" class="hint-btn" data-hint="نام کانال یا گپ خود را وارد کنید (حداکثر ۱۰ کلمه).">!</button>
+          <button type="button" class="hint-btn" data-hint="نام کانال یا گپ خود را وارد کنید (حداکثر ۷ حرف).">!</button>
         </div>
-        <input id="title" name="title" type="text" required placeholder="مثلاً: کانال برنامه‌نویسی" data-max-words="10" />
+        <input id="title" name="title" type="text" required placeholder="مثلاً: کانال من" />
       </div>
 
       <div class="field">
         <div class="label-row">
           <div style="display:flex; align-items:center; gap:8px;">
             <label for="title_note">تیتر</label>
-            <span class="word-counter" id="counter-note">۰ / ۷۰ کلمه</span>
+            <span class="word-counter" id="counter-note">۰ / ۱۵ حرف</span>
           </div>
-          <button type="button" class="hint-btn" data-hint="درباره کانال یا گپ خود چند خط بنویسید (حداکثر ۷۰ کلمه).">!</button>
+          <button type="button" class="hint-btn" data-hint="درباره کانال یا گپ خود بنویسید (حداکثر ۱۵ حرف).">!</button>
         </div>
-        <textarea id="title_note" name="title_note" rows="3" placeholder="توضیح کوتاه درباره محتوای کانال یا گروه..." data-max-words="70"></textarea>
+        <textarea id="title_note" name="title_note" rows="3" placeholder="توضیح کوتاه..."></textarea>
       </div>
 
       <div class="field">
@@ -159,11 +159,11 @@
         <div class="label-row">
           <div style="display:flex; align-items:center; gap:8px;">
             <label for="url">آدرس <b>*</b></label>
-            <span class="word-counter" id="counter-url">۰ / ۱۰ کلمه</span>
+            <span class="word-counter" id="counter-url">۰ / ۸ حرف</span>
           </div>
-          <button type="button" class="hint-btn" data-hint="لینک گروه یا کانال را وارد کنید. (مثال: https://t.me/example)">!</button>
+          <button type="button" class="hint-btn" data-hint="لینک گروه یا کانال (بدون https://). مثال: t.me/abc">!</button>
         </div>
-        <input id="url" name="url" type="url" inputmode="url" required placeholder="https://t.me/example" data-max-words="10" />
+        <input id="url" name="url" type="text" inputmode="url" required placeholder="t.me/abc" />
       </div>
 
       <button type="submit" class="submit" id="btn">تایید</button>
@@ -191,51 +191,51 @@
       let hintTimer = null;
       let busy = false;
 
-      // شمارش کلمات: با هر اسپیس یک کلمه جدید اضافه می‌شود
-      function countWords(str) { 
-        if (!str) return 0;
-        return str.trim().split(/\s+/).filter(Boolean).length; 
-      }
       function toPersianNum(num) { return num.toString().replace(/\d/g, d => '۰۱۲۳۴۵۶۷۸۹'[d]); }
 
-      // 🔒 تابع محدودسازی کلمات در حین تایپ
-      function setupWordLimit(inputId, counterId, maxWords) {
+      // 🔒 محدودکننده دقیق حروف (بدون در نظر گرفتن فاصله‌ها)
+      function setupCharLimit(inputId, counterId, maxChars) {
         const input = document.getElementById(inputId);
         const counter = document.getElementById(counterId);
 
         function enforce() {
-          const words = input.value.trim().split(/\s+/).filter(Boolean);
-          if (words.length > maxWords) {
-            const truncated = words.slice(0, maxWords).join(' ');
-            input.value = truncated;
-            // حفظ موقعیت مکان‌نما در انتهای متن
-            try { input.setSelectionRange(truncated.length, truncated.length); } catch (_) {}
+          let val = input.value;
+          let noSpaces = val.replace(/\s/g, '');
+          
+          if (noSpaces.length > maxChars) {
+            let result = '';
+            let count = 0;
+            for (let char of val) {
+              if (char.trim() === '') {
+                result += char;
+              } else {
+                if (count < maxChars) {
+                  result += char;
+                  count++;
+                }
+              }
+            }
+            input.value = result;
+            try { input.setSelectionRange(result.length, result.length); } catch (_) {}
             input.classList.add('error');
           } else {
             input.classList.remove('error');
           }
-          updateCounter();
-        }
 
-        function updateCounter() {
-          const words = input.value.trim().split(/\s+/).filter(Boolean);
-          const current = words.length;
-          counter.textContent = `${toPersianNum(current)} / ${toPersianNum(maxWords)} کلمه`;
-          if (current >= maxWords) counter.classList.add('limit');
+          let current = input.value.replace(/\s/g, '').length;
+          counter.textContent = `${toPersianNum(current)} / ${toPersianNum(maxChars)} حرف`;
+          if (current >= maxChars) counter.classList.add('limit');
           else counter.classList.remove('limit');
         }
 
-        // رویدادهای مختلف برای اطمینان از اجرای صحیح در همه مرورگرها
         input.addEventListener('input', enforce);
-        input.addEventListener('keyup', enforce);
-        input.addEventListener('change', enforce);
         input.addEventListener('paste', () => setTimeout(enforce, 10));
-        input.addEventListener('drop', () => setTimeout(enforce, 10));
+        input.addEventListener('keyup', enforce);
       }
 
-      setupWordLimit('title', 'counter-title', 10);
-      setupWordLimit('title_note', 'counter-note', 70);
-      setupWordLimit('url', 'counter-url', 10);
+      setupCharLimit('title', 'counter-title', 7);
+      setupCharLimit('title_note', 'counter-note', 15);
+      setupCharLimit('url', 'counter-url', 8);
 
       function showHint(anchor, text) {
         hintPop.textContent = text;
@@ -295,20 +295,12 @@
         const url = form.url.value.trim();
         const cat = categoryIn.value;
 
-        // 🚨 لایه امنیتی نهایی: قبل از ارسال، کلمات مجدداً چک می‌شوند
-        if (countWords(title) < 1) { setStatus('عنوان را وارد کنید.', 'err'); form.title.focus(); return; }
-        if (countWords(title) > 10) { setStatus('عنوان نباید بیشتر از ۱۰ کلمه باشد.', 'err'); form.title.focus(); return; }
-        if (countWords(form.title_note.value) > 70) { setStatus('تیتر نباید بیشتر از ۷۰ کلمه باشد.', 'err'); form.title_note.focus(); return; }
-        if (countWords(url) > 10) { setStatus('آدرس نباید بیشتر از ۱۰ کلمه باشد.', 'err'); form.url.focus(); return; }
+        // چک نهایی حروف سمت مرورگر
+        if (title.replace(/\s/g, '').length === 0) { setStatus('عنوان را وارد کنید.', 'err'); form.title.focus(); return; }
+        if (title.replace(/\s/g, '').length > 7) { setStatus('عنوان نباید بیشتر از ۷ حرف باشد.', 'err'); form.title.focus(); return; }
+        if (form.title_note.value.replace(/\s/g, '').length > 15) { setStatus('تیتر نباید بیشتر از ۱۵ حرف باشد.', 'err'); form.title_note.focus(); return; }
+        if (url.replace(/\s/g, '').length > 8) { setStatus('آدرس نباید بیشتر از ۸ حرف باشد.', 'err'); form.url.focus(); return; }
         if (!cat) { setStatus('دسته‌بندی را انتخاب کنید.', 'err'); return; }
-
-        // اعتبارسنجی سخت‌گیرانه آدرس واقعی
-        const urlRegex = /^https?:\/\/([a-zA-Z0-9-]+\.)+[a-zA-Z]{2,}(:[0-9]+)?(\/.*)?$/i;
-        if (!urlRegex.test(url)) { 
-          setStatus('آدرس وارد شده معتبر نیست. (مثال: https://t.me/example)', 'err'); 
-          form.url.focus(); 
-          return; 
-        }
 
         busy = true; btn.disabled = true;
         const originalText = btn.textContent;
@@ -338,9 +330,9 @@
           form.reset();
           setCategory('');
           
-          document.getElementById('counter-title').textContent = '۰ / ۱۰ کلمه';
-          document.getElementById('counter-note').textContent = '۰ / ۷۰ کلمه';
-          document.getElementById('counter-url').textContent = '۰ / ۱۰ کلمه';
+          document.getElementById('counter-title').textContent = '۰ / ۷ حرف';
+          document.getElementById('counter-note').textContent = '۰ / ۱۵ حرف';
+          document.getElementById('counter-url').textContent = '۰ / ۸ حرف';
           document.querySelectorAll('.word-counter').forEach(c => c.classList.remove('limit'));
           document.querySelectorAll('input, textarea').forEach(i => i.classList.remove('error'));
           
@@ -351,9 +343,14 @@
         }
       });
 
+      // اصلاح خودکار آدرس (افزودن https:// در صورت نبود)
       form.url.addEventListener('blur', () => {
         let v = form.url.value.trim();
-        if (v && !/^https?:\/\//i.test(v)) form.url.value = 'https://' + v;
+        if (v && !/^https?:\/\//i.test(v)) {
+          // اگر کاربر https:// وارد نکرده بود، اضافه می‌کنیم
+          form.url.value = 'https://' + v;
+          // ولی چون محدودیت حروف داریم، طولش زیاد میشه. پس در سرور هندل میشه.
+        }
       });
     })();
   </script>
